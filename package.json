@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node server"
+    "start": "node server",
+    "build": "rm -rf build && mkdir -p build && webpack && cp -r dist build && cp public/index.html build",
+    "deploy": "npm run build && gh-pages -d build"
   },
   "license": "MIT",
   "dependencies": {
@@ -22,6 +24,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.2.3",
     "babel-loader": "^8.0.4",
+    "gh-pages": "^2.0.1",
     "worker-loader": "2.0.0"
   }
 }
