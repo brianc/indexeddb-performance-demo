@@ -14,6 +14,9 @@ const incommingOps = {
     proxy("write");
     // fill the database, pausing for a bit during writes
     await db.fill(1);
+    global.postMessage({
+      op: "done"
+    });
   }
 };
 

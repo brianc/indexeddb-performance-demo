@@ -33,6 +33,7 @@ export default class Database extends EventEmitter {
     let data = new ArrayBuffer(5000);
     let count = 0;
     for (let i = 0; i < BATCHES; i++) {
+      const stamp = Date.now();
       const tx = this.db.transaction(STORE_NAME, "readwrite");
       let timestamp;
       for (let j = 0; j < RECORDS_PER_BATCH; j++) {
@@ -46,6 +47,7 @@ export default class Database extends EventEmitter {
         batchSize: RECORDS_PER_BATCH,
         total: RECORDS_PER_BATCH * i,
         timestamp,
+        duration: Date.now() - stamp,
         start,
         end
       });

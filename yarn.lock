@@ -1013,6 +1013,11 @@ binary-extensions@^1.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
   integrity sha512-DYWGk01lDcxeS/K9IHPGWfT8PsJmbXRtRd2Sx72Tnb8pcYZQFF1oSDb8hJtS1vhp212q1Rzi5dUf9+nq0o9UIg==
 
+binary-search@^1.3.3:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/binary-search/-/binary-search-1.3.4.tgz#d15f44ff9226ef309d85247fa0dbfbf659955f56"
+  integrity sha512-dPxU/vZLnH0tEVjVPgi015oSwqu6oLfCeHywuFRhBE0yM0mYocvleTl8qsdM1YFhRzTRhM1+VzS8XLDVrHPopg==
+
 bluebird@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.3.tgz#7d01c6f9616c9a51ab0f8c549a79dfe6ec33efa7"
@@ -2825,6 +2830,14 @@ md5.js@^1.3.4:
     inherits "^2.0.1"
     safe-buffer "^5.1.2"
 
+measured-core@^1.40.1:
+  version "1.40.1"
+  resolved "https://registry.yarnpkg.com/measured-core/-/measured-core-1.40.1.tgz#0cf5be0d97c0ebd25abceb6185d96ddd4e5a77ec"
+  integrity sha512-XvSwZmMsuZKQ7BDoxTDuIjr3kxzm+IBiovzIy5OCq+5IdbCEnmlON/I2CqG7zODYZX9bB5oDhwbpMMZSC5Ri3w==
+  dependencies:
+    binary-search "^1.3.3"
+    optional-js "^2.0.0"
+
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
@@ -3243,6 +3256,11 @@ opn@^5.1.0:
   integrity sha512-YF9MNdVy/0qvJvDtunAOzFw9iasOQHpVthTCvGzxt61Il64AYSGdK+rYwld7NAfk9qJ7dt+hymBNSc9LNYS+Sw==
   dependencies:
     is-wsl "^1.1.0"
+
+optional-js@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/optional-js/-/optional-js-2.0.0.tgz#6c9e19adfec28c5bc0c7056f380cf03455325312"
+  integrity sha1-bJ4Zrf7CjFvAxwVvOAzwNFUyUxI=
 
 original@^1.0.0:
   version "1.0.2"

@@ -2,8 +2,11 @@ import Worker from "worker-loader?inline=true!./worker";
 import EventEmitter from "events";
 
 const incommingOps = {
-  write({ batchSize, total, timestamp, start, end }) {
-    this.emit("write", { batchSize, total, timestamp, start, end });
+  write(msg) {
+    this.emit("write", msg);
+  },
+  done() {
+    this.emit("done");
   }
 };
 
