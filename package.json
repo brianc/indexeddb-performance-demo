@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server",
-    "build": "rm -rf build && mkdir -p build && webpack && cp -r dist build && cp public/index.html build",
+    "build": "rm -rf build && mkdir -p build && NODE_ENV=production webpack && cp -r dist build && cp public/index.html build",
     "deploy": "npm run build && gh-pages -d build"
   },
   "license": "MIT",

@@ -1,13 +1,13 @@
 import idb from "idb";
 import EventEmitter from "events";
-import { sample } from 'lodash';
+import { sample } from "lodash";
 
 const DB_NAME = "test-db";
 const STORE_NAME = "keyval";
 const BATCHES = 500;
 const RECORDS_PER_BATCH = 150;
 
-const fileNames = [ 'foo', 'bar', 'baz', 'bump' ];
+const fileNames = ["foo", "bar", "baz", "bump"];
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
@@ -18,12 +18,11 @@ export default class Database extends EventEmitter {
   }
 
   static async open() {
-    // recreate database on page load
     const db = await idb.open(DB_NAME, 1, upgradeDB => {
       const store = upgradeDB.createObjectStore(STORE_NAME, {
         autoIncrement: true
       });
-      store.createIndex("index", ["timestamp","fileName"], { unique: false });
+      store.createIndex("index", ["timestamp", "fileName"], { unique: false });
     });
     return new Database(db);
   }
@@ -41,7 +40,11 @@ export default class Database extends EventEmitter {
       let timestamp;
       for (let j = 0; j < RECORDS_PER_BATCH; j++) {
         timestamp = start + count++;
-        tx.objectStore(STORE_NAME).put({ timestamp, data, fileName: sample(fileNames)  });
+        tx.objectStore(STORE_NAME).put({
+          timestamp,
+          data,
+          fileName: sample(fileNames)
+        });
       }
       await delay(pauseForMillis);
       await tx.complete;
@@ -68,7 +71,7 @@ export default class Database extends EventEmitter {
   async getMessages(start, end) {
     const tx = this.db.transaction(STORE_NAME, "readonly");
     let store = tx.objectStore(STORE_NAME).index("index");
-    const range = IDBKeyRange.bound([start, ""], [ end, "~"]);
+    const range = IDBKeyRange.bound([start, ""], [end, "~"]);
     const items = [];
     store.iterateCursor(range, cursor => {
       if (!cursor) {
