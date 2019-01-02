@@ -1,10 +1,13 @@
 import idb from "idb";
 import EventEmitter from "events";
+import { sample } from 'lodash';
 
 const DB_NAME = "test-db";
 const STORE_NAME = "keyval";
 const BATCHES = 500;
 const RECORDS_PER_BATCH = 150;
+
+const fileNames = [ 'foo', 'bar', 'baz', 'bump' ];
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
@@ -20,7 +23,7 @@ export default class Database extends EventEmitter {
       const store = upgradeDB.createObjectStore(STORE_NAME, {
         autoIncrement: true
       });
-      store.createIndex("timestamp", "timestamp", { unique: false });
+      store.createIndex("index", ["timestamp","fileName"], { unique: false });
     });
     return new Database(db);
   }
@@ -28,17 +31,17 @@ export default class Database extends EventEmitter {
   // fill the database with messages with incrementing timestamps
   // and a 5k byte array buffer
   async fill(pauseForMillis = 1) {
-    const start = Date.now();
+    const start = performance.now();
     const end = start + BATCHES * RECORDS_PER_BATCH;
     let data = new ArrayBuffer(5000);
     let count = 0;
     for (let i = 0; i < BATCHES; i++) {
-      const stamp = Date.now();
+      const stamp = performance.now();
       const tx = this.db.transaction(STORE_NAME, "readwrite");
       let timestamp;
       for (let j = 0; j < RECORDS_PER_BATCH; j++) {
         timestamp = start + count++;
-        tx.objectStore(STORE_NAME).put({ timestamp, data });
+        tx.objectStore(STORE_NAME).put({ timestamp, data, fileName: sample(fileNames)  });
       }
       await delay(pauseForMillis);
       await tx.complete;
@@ -47,7 +50,7 @@ export default class Database extends EventEmitter {
         batchSize: RECORDS_PER_BATCH,
         total: RECORDS_PER_BATCH * i,
         timestamp,
-        duration: Date.now() - stamp,
+        duration: performance.now() - stamp,
         start,
         end
       });
@@ -64,8 +67,8 @@ export default class Database extends EventEmitter {
   // read records between start & end inclusive
   async getMessages(start, end) {
     const tx = this.db.transaction(STORE_NAME, "readonly");
-    let store = tx.objectStore(STORE_NAME).index("timestamp");
-    const range = IDBKeyRange.bound(start, end);
+    let store = tx.objectStore(STORE_NAME).index("index");
+    const range = IDBKeyRange.bound([start, ""], [ end, "~"]);
     const items = [];
     store.iterateCursor(range, cursor => {
       if (!cursor) {
